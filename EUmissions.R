@@ -2,11 +2,11 @@
 
 # Loading libraries
 
-library(stargazer)
+library(stargazer, plotly)
 
 # Declaring the filepath for the data file
 
-filepath <- 'C:/Users/User/Documents/Data/EUNOx.csv'
+filepath <- 'C:/Users/User/Documents/Data/EUmissions.csv'
 
 # Reading in the data
 
@@ -35,7 +35,7 @@ noxdata <- na.omit(noxdata)
 
 # Create a table of summary statistics for the data and write to file
 
-write.csv(stargazer(noxdata), 'C:/Users/User/Documents/Data/EUNOx/sumtab.txt', row.names = FALSE)
+write.csv(stargazer(noxdata), 'C:/Users/User/Documents/Data/EUmissions/sumtab.txt', row.names = FALSE)
 
 # Regression models
 
@@ -95,16 +95,44 @@ noxmod12 <- lm(Ln.Oxides.of.Nitrogen.per.capita ~ Ln.Initial.NOx.per.capita + Gr
 # Writing results to file
 
 write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6, type = 'text'),
-          'C:/Users/User/Documents/Data/EUNOx/regression_results_baseline.txt', row.names = FALSE)
+          'C:/Users/User/Documents/Data/EUmissions/regression_results_baseline.txt', row.names = FALSE)
 write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6),
-          'C:/Users/User/Documents/Data/EUNOx/regression_results_baseline_tex.txt', row.names = FALSE)
+          'C:/Users/User/Documents/Data/EUmissions/regression_results_baseline_tex.txt', row.names = FALSE)
 write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12, type = 'text'),
-          'C:/Users/User/Documents/Data/EUNOx/regression_results_fullly_specified.txt', row.names = FALSE)
+          'C:/Users/User/Documents/Data/EUmissions/regression_results_fullly_specified.txt', row.names = FALSE)
 write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12),
-          'C:/Users/User/Documents/Data/EUNOx/regression_results_fully_specified_tex.txt', row.names = FALSE)
+          'C:/Users/User/Documents/Data/EUmissions/regression_results_fully_specified_tex.txt', row.names = FALSE)
 
 # Creating a choropleth for the paper with plotly
 
-#library(plotly)
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv')
+names(df) <- c('Country', 'Junk', 'Code')
+mapdat <- subset(noxdata, Year == 2012)
+mapdat <- merge(mapdat, df, by = 'Country')
 
+# Specify map projection/options
+
+l <- list(color = toRGB('grey'), width = 0.5)
+
+geog <- list(showframe = FALSE,
+            showcoastlines = FALSE,
+            scope = 'europe',
+            projection = list(type = 'Mercator'))
+
+# Create the choropleth maps and save to file
+
+init_map <- plot_geo(mapdat) %>%
+  add_trace(z = ~Initial.NOx.per.capita, color = ~Initial.NOx.per.capita, colors = 'Greys',
+            text = ~Country, locations = ~Code, marker = list(line = l)) %>%
+  colorbar(title = '', limits = c(0,2.2)) %>%
+  layout(title = 'Initial (1970) per capita NOx emissions in tons',
+    geo = geog)
+
+fin_map <- plot_geo(mapdat) %>%
+  add_trace(z = ~Oxides.of.Nitrogen.per.capita, color = ~Initial.NOx.per.capita, colors = 'Greys',
+            text = ~Country, locations = ~Code, marker = list(line = l)) %>%
+  colorbar(title = '', limits = c(0,2.2)) %>%
+  layout(title = 'Final (2012) per capita NOx emissions in tons',
+    limits = c(0,2),
+    geo = geog)
 
