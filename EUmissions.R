@@ -2,7 +2,8 @@
 
 # Loading libraries
 
-library(stargazer, plotly)
+library(stargazer)
+library(plotly)
 
 # Declaring the filepath for the data file
 
@@ -133,6 +134,5 @@ fin_map <- plot_geo(mapdat) %>%
             text = ~Country, locations = ~Code, marker = list(line = l)) %>%
   colorbar(title = '', limits = c(0,2.2)) %>%
   layout(title = 'Final (2012) per capita NOx emissions in tons',
-    limits = c(0,2),
     geo = geog)
 
