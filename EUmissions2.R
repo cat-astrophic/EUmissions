@@ -19,7 +19,7 @@ noxdata <- read.csv(filepath)
 noxdata$Oxides.of.Nitrogen.per.capita <- 1000*noxdata$NOX / noxdata$Population
 noxdata$Ln.Oxides.of.Nitrogen.per.capita <- log(noxdata$Oxides.of.Nitrogen.per.capita)
 noxdata$Ln.GDP.per.capita <- log(noxdata$GDP.per.capita)
-noxdata$Initial.NOx.per.capita <- 1000*noxdata$NOX.Initial / noxdata$Initial.Population
+noxdata$Initial.NOx.per.capita <- 1000*noxdata$NOX.Initial / noxdata$Initial.Population.90
 noxdata$Ln.Initial.NOx.per.capita <- log(noxdata$Initial.NOx.per.capita)
 
 # Create a new dataframe (for visualization purposes when looking at histograms)
