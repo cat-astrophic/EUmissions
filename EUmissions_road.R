@@ -36,7 +36,7 @@ noxdata <- na.omit(noxdata)
 
 # Create a table of summary statistics for the data and write to file
 
-write.csv(stargazer(noxdata), 'C:/Users/User/Documents/Data/EUmissions/sumtab2.txt', row.names = FALSE)
+write.csv(stargazer(noxdata), 'C:/Users/User/Documents/Data/EUmissions/sumtab_ROAD.txt', row.names = FALSE)
 
 # Regression models
 
