@@ -95,14 +95,25 @@ noxmod12 <- lm(Ln.Oxides.of.Nitrogen.per.capita ~ Ln.Initial.NOx.per.capita + Gr
 
 # Writing results to file
 
-write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6, type = 'text'),
+write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6, type = 'text',
+                    se = list(rse1, rse2, rse3, rse4, rse5, rse6)),
           'C:/Users/User/Documents/Data/EUmissions/regression_results_baseline.txt', row.names = FALSE)
-write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6),
+write.csv(stargazer(noxmod1, noxmod2, noxmod3, noxmod4, noxmod5, noxmod6,
+                    se = list(rse1, rse2, rse3, rse4, rse5, rse6)),
           'C:/Users/User/Documents/Data/EUmissions/regression_results_baseline_tex.txt', row.names = FALSE)
-write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12, type = 'text'),
+write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12, type = 'text',
+                    se = list(rse7, rse8, rse9, rse10, rse11, rse12)),
           'C:/Users/User/Documents/Data/EUmissions/regression_results_fullly_specified.txt', row.names = FALSE)
-write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12),
+write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12,
+                    se = list(rse7, rse8, rse9, rse10, rse11, rse12)),
           'C:/Users/User/Documents/Data/EUmissions/regression_results_fully_specified_tex.txt', row.names = FALSE)
+
+# Viewing results
+
+stargazer(noxmod1,noxmod2,noxmod3,noxmod4,noxmod5,noxmod6, type = 'text',
+          se = list(rse1, rse2, rse3, rse4, rse5, rse6))
+stargazer(noxmod7,noxmod8,noxmod9,noxmod10,noxmod11,noxmod12, type = 'text',
+          se = list(rse7, rse8, rse9, rse10, rse11, rse12))
 
 # Creating a choropleth for the paper with plotly
 
