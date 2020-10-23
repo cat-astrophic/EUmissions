@@ -19,7 +19,7 @@ noxdata <- read.csv(filepath)
 noxdata$Oxides.of.Nitrogen.per.capita <- 1000*noxdata$Road.NOX / noxdata$Population
 noxdata$Ln.Oxides.of.Nitrogen.per.capita <- log(noxdata$Oxides.of.Nitrogen.per.capita)
 noxdata$Ln.GDP.per.capita <- log(noxdata$GDP.per.capita)
-noxdata$Initial.NOx.per.capita <- 1000*noxdata$Road.NOX.Init / noxdata$Initial.Population
+noxdata$Initial.NOx.per.capita <- 1000*noxdata$Road.NOX.Init / noxdata$Initial.Population.90
 noxdata$Ln.Initial.NOx.per.capita <- log(noxdata$Initial.NOx.per.capita)
 
 # Create a new dataframe (for visualization purposes when looking at histograms)
@@ -145,6 +145,63 @@ write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12, typ
 write.csv(stargazer(noxmod7, noxmod8, noxmod9, noxmod10, noxmod11, noxmod12,
                     se = list(rse7, rse8, rse9, rse10, rse11, rse12)),
           'C:/Users/User/Documents/Data/EUmissions/regression_results_fully_specified_ROAD_tex.txt', row.names = FALSE)
+
+# Creating a choropleth for the paper with plotly
+
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv')
+names(df) <- c('Country', 'Junk', 'Code')
+mapdat <- subset(noxdata, Year == '2015')
+mapdat <- merge(mapdat, df, by = 'Country')
+
+# Specify map projection/options
+
+l <- list(color = toRGB('grey'), width = 0.5)
+
+geog <- list(showframe = FALSE,
+             showcoastlines = FALSE,
+             scope = 'europe',
+             projection = list(type = 'Mercator'))
+
+# Create the choropleth maps and save to file
+
+mapdat$Initial.NOx.per.capita <- mapdat$Initial.NOx.per.capita*1000
+mapdat$Oxides.of.Nitrogen.per.capita <- mapdat$Oxides.of.Nitrogen.per.capita*1000
+
+init_map <- plot_geo(mapdat) %>%
+  add_trace(z = ~Initial.NOx.per.capita, color = ~Initial.NOx.per.capita, colors = 'Greys',
+            text = ~Country, locations = ~Code, marker = list(line = l)) %>%
+  colorbar(title = '', limits = c(0,25)) %>%
+  layout(title = 'Initial (1990) per capita NOx emissions in tons',
+         geo = geog)
+
+fin_map <- plot_geo(mapdat) %>%
+  add_trace(z = ~Oxides.of.Nitrogen.per.capita, color = ~Oxides.of.Nitrogen.per.capita, colors = 'Greys',
+            text = ~Country, locations = ~Code, marker = list(line = l)) %>%
+  colorbar(title = '', limits = c(0,25)) %>%
+  layout(title = 'Final (2015) per capita NOx emissions in tons',
+         geo = geog)
+
+# Creating additional plots as data viz for the paper
+
+uk_df <- noxdata[which(noxdata$Country == 'United Kingdom'),]
+france_df <- noxdata[which(noxdata$Country == 'France'),]
+ned_df <- noxdata[which(noxdata$Country == 'Netherlands'),]
+fin_df <- noxdata[which(noxdata$Country == 'Finland'),]
+austria_df <- noxdata[which(noxdata$Country == 'Austria'),]
+years <- c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015)
+
+plot(years, austria_df$Oxides.of.Nitrogen.per.capita*1000,type = 'l', col = 'green', ylim = c(0,22),
+     xlab = 'Year', ylab = 'per capita NOx Emissions (metric tons)',
+     main = 'Times series of per capita NOx emissions in Europe')
+lines(years, fin_df$Oxides.of.Nitrogen.per.capita*1000, col = 'blue', lty = 'dashed')
+lines(years, france_df$Oxides.of.Nitrogen.per.capita*1000, col = 'red')
+lines(years, ned_df$Oxides.of.Nitrogen.per.capita*1000, col = 'orange', lty = 'dashed')
+lines(years, uk_df$Oxides.of.Nitrogen.per.capita*1000, col = 'black', lty = 2)
+legend(2000, 5, legend = c('Austria', 'Finland', 'France', 'The Netherlands', 'United Kingdom'),
+       col = c('green', 'blue', 'red', 'orange', 'black'), lty = c(1,2,1,2,2), cex = 0.8)
+
+dev.copy(png,'C:/Users/User/Documents/Data/EUmissions/time_series_ROAD.png')
+dev.off()
 
 # Viewing results
 
