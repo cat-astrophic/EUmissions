@@ -164,20 +164,20 @@ geog <- list(showframe = FALSE,
 
 # Create the choropleth maps and save to file
 
-mapdat$Initial.NOx.per.capita <- mapdat$Initial.NOx.per.capita*1000
-mapdat$Oxides.of.Nitrogen.per.capita <- mapdat$Oxides.of.Nitrogen.per.capita*1000
+mapdat$Initial.NOx.per.capita <- mapdat$Initial.NOx.per.capita
+mapdat$Oxides.of.Nitrogen.per.capita <- mapdat$Oxides.of.Nitrogen.per.capita
 
 init_map <- plot_geo(mapdat) %>%
   add_trace(z = ~Initial.NOx.per.capita, color = ~Initial.NOx.per.capita, colors = 'Greys',
             text = ~Country, locations = ~Code, marker = list(line = l)) %>%
-  colorbar(title = '', limits = c(0,25)) %>%
+  colorbar(title = '', limits = c(0,.025)) %>%
   layout(title = 'Initial (1990) per capita NOx emissions in tons',
          geo = geog)
 
 fin_map <- plot_geo(mapdat) %>%
   add_trace(z = ~Oxides.of.Nitrogen.per.capita, color = ~Oxides.of.Nitrogen.per.capita, colors = 'Greys',
             text = ~Country, locations = ~Code, marker = list(line = l)) %>%
-  colorbar(title = '', limits = c(0,25)) %>%
+  colorbar(title = '', limits = c(0,.025)) %>%
   layout(title = 'Final (2015) per capita NOx emissions in tons',
          geo = geog)
 
@@ -190,14 +190,14 @@ fin_df <- noxdata[which(noxdata$Country == 'Finland'),]
 austria_df <- noxdata[which(noxdata$Country == 'Austria'),]
 years <- c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015)
 
-plot(years, austria_df$Oxides.of.Nitrogen.per.capita*1000,type = 'l', col = 'green', ylim = c(0,22),
+plot(years, austria_df$Oxides.of.Nitrogen.per.capita,type = 'l', col = 'green', ylim = c(0,.025),
      xlab = 'Year', ylab = 'per capita NOx Emissions (metric tons)',
      main = 'Times series of per capita NOx emissions in Europe')
-lines(years, fin_df$Oxides.of.Nitrogen.per.capita*1000, col = 'blue', lty = 'dashed')
-lines(years, france_df$Oxides.of.Nitrogen.per.capita*1000, col = 'red')
-lines(years, ned_df$Oxides.of.Nitrogen.per.capita*1000, col = 'orange', lty = 'dashed')
-lines(years, uk_df$Oxides.of.Nitrogen.per.capita*1000, col = 'black', lty = 2)
-legend(2000, 5, legend = c('Austria', 'Finland', 'France', 'The Netherlands', 'United Kingdom'),
+lines(years, fin_df$Oxides.of.Nitrogen.per.capita, col = 'blue', lty = 'dashed')
+lines(years, france_df$Oxides.of.Nitrogen.per.capita, col = 'red')
+lines(years, ned_df$Oxides.of.Nitrogen.per.capita, col = 'orange', lty = 'dashed')
+lines(years, uk_df$Oxides.of.Nitrogen.per.capita, col = 'black', lty = 2)
+legend(2000, .006, legend = c('Austria', 'Finland', 'France', 'The Netherlands', 'United Kingdom'),
        col = c('green', 'blue', 'red', 'orange', 'black'), lty = c(1,2,1,2,2), cex = 0.8)
 
 dev.copy(png,'C:/Users/User/Documents/Data/EUmissions/time_series_ROAD.png')
