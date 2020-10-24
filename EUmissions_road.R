@@ -192,7 +192,7 @@ years <- c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 201
 
 plot(years, austria_df$Oxides.of.Nitrogen.per.capita,type = 'l', col = 'green', ylim = c(0,.025),
      xlab = 'Year', ylab = 'per capita NOx Emissions (metric tons)',
-     main = 'Times series of per capita NOx emissions in Europe')
+     main = 'Times series of per capita on-road NOx emissions in Europe')
 lines(years, fin_df$Oxides.of.Nitrogen.per.capita, col = 'blue', lty = 'dashed')
 lines(years, france_df$Oxides.of.Nitrogen.per.capita, col = 'red')
 lines(years, ned_df$Oxides.of.Nitrogen.per.capita, col = 'orange', lty = 'dashed')
