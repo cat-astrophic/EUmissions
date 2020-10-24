@@ -157,13 +157,13 @@ austria_df <- noxdata[which(noxdata$Country == 'Austria'),]
 years <- c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012)
 
 plot(years, austria_df$Oxides.of.Nitrogen.per.capita,type = 'l', col = 'green', ylim = c(0,1.6),
-     xlab = 'Year', ylab = 'per capita NOx Emissions (tons)',
+     xlab = 'Year', ylab = 'per capita NOx Emissions (metric tons CO2e)',
      main = 'Times series of per capita NOx emissions in Europe')
 lines(years, fin_df$Oxides.of.Nitrogen.per.capita, col = 'blue', lty = 'dashed')
 lines(years, france_df$Oxides.of.Nitrogen.per.capita, col = 'red')
 lines(years, ned_df$Oxides.of.Nitrogen.per.capita, col = 'orange', lty = 'dashed')
 lines(years, uk_df$Oxides.of.Nitrogen.per.capita, col = 'black', lty = 2)
-legend(2000, 0.45, legend = c('Austria', 'Finland', 'France', 'The Netherlands', 'United Kingdom'),
+legend(2000, 0.4, legend = c('Austria', 'Finland', 'France', 'The Netherlands', 'United Kingdom'),
        col = c('green', 'blue', 'red', 'orange', 'black'), lty = c(1,2,1,2,2), cex = 0.8)
 
 dev.copy(png,'C:/Users/User/Documents/Data/EUmissions/time_series.png')
