@@ -4,4 +4,4 @@ This is the repo for a paper on the efficacy of EU vehicular emissions standards
 
 In addition to running the econometric models, the script creates choropleth maps for per capita levels of Nox emissions by nation.
 
-This paper is currently under review at *Journal of Cleaner Production*.
+This paper is currently under review.
